@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace DevStore.Domain {
 
@@ -11,6 +10,10 @@ namespace DevStore.Domain {
         public DateTime AcquiredDate { get; set; }
         public bool IsActive { get; set; }
         public int CategoryId { get; set; }
+
+        //  Virtual - Marca os métodos e propriedades que podem ser extendidos por uma sub-classe, ou seja, 
+        //  que permite ter o comportamento alterado através de um override.
+        //  Permite que seja sobrescrito em tempo de execução
         public virtual Category Category { get; set; }
 
         public Product() {

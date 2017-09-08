@@ -10,6 +10,7 @@ using System.Web.Http.Description;
 namespace DevStore.Api.Controllers {
 
     public class ProductController : ApiController {
+
         private DataContext db = new DataContext();
 
         // GET: api/Product
