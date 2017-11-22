@@ -10,7 +10,11 @@ namespace DevStore.Infra.DataContexts {
         //  Informa o nome da string de conexão
         public DataContext() : base("DevStoreConnectionString") {
             // Adiciona o inicializador 
-            Database.SetInitializer<DataContext>(new DataContextInit());
+            //  Database.SetInitializer<DataContext>(new DataContextInit());
+
+            //  Nao retorna os dados das classes relacionadas se estiver false
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
         }
 
         //  Gera minhas tabelas através das minhas classes de domínio
@@ -23,7 +27,7 @@ namespace DevStore.Infra.DataContexts {
             modelBuilder.Configurations.Add(new ProductMap());
             modelBuilder.Configurations.Add(new CategoryMap());
             base.OnModelCreating(modelBuilder);
-        }
+        } 
     }
 
     //  Inicializa o banco de dados, apaga e cria a base se houver mudanças

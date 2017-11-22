@@ -11,37 +11,40 @@ namespace DevStore.Api.Controllers {
 
     public class ProductController : ApiController {
 
+        //  Executar no CMD dentro da pasta C:\Program Files\IIS Express 
+        //  appcmd set config /section:directoryBrowse /enabled:true
+
         private DataContext db = new DataContext();
 
-        // GET: api/Product
+        // GET: api/products
+        [Route("api/products")]
         public IQueryable<Product> GetProducts() {
-            return db.Products;
+            //  Inclui o relacionamento da categoria no retorno
+            return db.Products.Include("Category");
         }
 
-        // GET: api/Product/5
+        // GET: api/products/5
+        [Route("api/products/{id}")]
         [ResponseType(typeof(Product))]
         public IHttpActionResult GetProduct(int id) {
             Product product = db.Products.Find(id);
             if (product == null) {
                 return NotFound();
             }
-
             return Ok(product);
         }
 
-        // PUT: api/Product/5
+        // PUT: api/products/5
+        [Route("api/products/{id}")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProduct(int id, Product product) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
-
             if (id != product.Id) {
                 return BadRequest();
             }
-
             db.Entry(product).State = EntityState.Modified;
-
             try {
                 db.SaveChanges();
             } catch (DbUpdateConcurrencyException) {
@@ -51,34 +54,31 @@ namespace DevStore.Api.Controllers {
                     throw;
                 }
             }
-
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Product
+        // POST: api/products
+        [Route("api/products")]
         [ResponseType(typeof(Product))]
         public IHttpActionResult PostProduct(Product product) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
-
             db.Products.Add(product);
             db.SaveChanges();
-
             return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
         }
 
-        // DELETE: api/Product/5
+        // DELETE: api/products/5
+        [Route("api/products/{id}")]
         [ResponseType(typeof(Product))]
         public IHttpActionResult DeleteProduct(int id) {
             Product product = db.Products.Find(id);
             if (product == null) {
                 return NotFound();
             }
-
             db.Products.Remove(product);
             db.SaveChanges();
-
             return Ok(product);
         }
 
@@ -89,8 +89,7 @@ namespace DevStore.Api.Controllers {
             base.Dispose(disposing);
         }
 
-        private bool ProductExists(int id) 
-            {
+        private bool ProductExists(int id) {
             return db.Products.Count(e => e.Id == id) > 0;
         }
     }
