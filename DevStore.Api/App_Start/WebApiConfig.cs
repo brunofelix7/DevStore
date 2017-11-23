@@ -16,13 +16,19 @@ namespace DevStore.Api {
             var settings = jsonFormatter.SerializerSettings;
 
             //  Sempre traz o objeto, nao faca nenhuma referencia
-            jsonFormatter.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            jsonFormatter.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+
             //  Remove o XML
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+
             //  Identa o formato exposto pela API
             settings.Formatting = Formatting.Indented;
+
             //  O retorno das propriedades sao em minusculo (REST)
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            //  Habilita o Cors para minha setar de quais URLs minha API vai ser acessada
+            config.EnableCors();
 
             // Rotas da API da Web
             config.MapHttpAttributeRoutes();
